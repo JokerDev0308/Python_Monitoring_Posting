@@ -38,21 +38,21 @@ async def check_and_post_stock(product, idx):
     stock_data = await check_stock_amazon(product_url)
     current_status = stock_data['status']
     # 商品が見つからなければ「不明」とみなす
-    # previous_status = product_status[idx]['stock_status']
+    previous_status = product_status[idx]['stock_status']
 
     # 在庫状況が変わった場合、SNSに投稿
-    # if previous_status != current_status:
-    product_status[idx]['stock_status'] = current_status
-    
-    if current_status == "在庫あり" and is_within_notification_time():
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        message = f"💡在庫復活💡PR\n  {current_time}\n {product_name}\n {stock_data['sale']}円\n { f'{description}\n' if description.lower() != "nan" else "" }  {affiliate_link}"
-        post_to_sns(message)
-        product_status[idx]['latest_posted_date'] = current_time
-    elif current_status == "在庫なし":
-        print(f"{product_name} は在庫がありません。")
-    
-    await save_product_status(product_status)
-    # else:
-    #     pass
+    if previous_status != current_status:
+        product_status[idx]['stock_status'] = current_status
+        
+        if current_status == "在庫あり" and is_within_notification_time():
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            message = f"💡在庫復活💡PR\n  {current_time}\n {product_name}\n {stock_data['sale']}円\n { f'{description}\n' if description.lower() != "nan" else "" }  {affiliate_link}"
+            post_to_sns(message)
+            product_status[idx]['latest_posted_date'] = current_time
+        elif current_status == "在庫なし":
+            print(f"{product_name} は在庫がありません。")
+        
+        await save_product_status(product_status)
+    else:
+        pass
 

@@ -3,4 +3,5 @@
 .gitlab
 build
 dist
-_pycache_
+__pycache__
+main.spec
