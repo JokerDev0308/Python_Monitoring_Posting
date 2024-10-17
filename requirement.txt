@@ -1,0 +1,10 @@
+tweepy
+requests
+pandas
+openpyxl
+beautifulsoup4
+tkinter
+asyncio
+logging
+threading
+bs4
